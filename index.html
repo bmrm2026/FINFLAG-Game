@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FINFLAG: Financial Influencer Content Evaluation Game</title>
+  <meta name="description" content="An educational evaluation web game to critically assess finfluencer claims, evidence, sources, bias, and red flags on social media.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .animate-fade-in {
+      animation: fadeIn 0.25s ease-out forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col selection:bg-rose-500 selection:text-white">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-40 bg-slate-900/95 backdrop-blur border-b border-slate-800 px-4 py-3">
+    <div class="max-w-4xl mx-auto flex items-center justify-between gap-4">
+      <div onclick="showScreen('start')" class="flex items-center gap-2.5 cursor-pointer hover:opacity-90 transition-opacity">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-rose-500 to-amber-500 flex items-center justify-center shadow-lg shadow-rose-500/20 text-white font-black text-lg">
+          🚩
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <span class="font-black text-lg tracking-tight text-white">FINFLAG</span>
+            <span class="text-[10px] uppercase font-bold tracking-widest px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-400 border border-rose-500/30">
+              GAME
+            </span>
+          </div>
+          <p class="text-xs text-slate-400 hidden sm:block">Finfluencer Content Evaluation</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div id="header-score-container" class="hidden items-center gap-2 bg-slate-800/80 px-3 py-1.5 rounded-lg border border-slate-700">
+          <span class="text-xs text-slate-400 font-medium">Score:</span>
+          <span class="text-sm font-bold text-amber-400 font-mono" id="header-score">0 / 35</span>
+        </div>
+
+        <button onclick="toggleSound()" id="sound-btn" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 transition-colors" title="Toggle Sound">
+          🔊
+        </button>
+      </div>
+    </div>
+
+    <!-- Progress Line -->
+    <div id="progress-bar-container" class="hidden w-full bg-slate-800 h-1.5 mt-2 rounded-full overflow-hidden max-w-4xl mx-auto">
+      <div id="progress-bar" class="bg-gradient-to-r from-rose-500 via-amber-500 to-emerald-500 h-full transition-all duration-300 ease-out" style="width: 0%"></div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="flex-1 flex flex-col justify-center items-center p-4 sm:p-6 w-full max-w-4xl mx-auto">
+
+    <!-- SCREEN 1: START SCREEN -->
+    <div id="screen-start" class="max-w-2xl w-full mx-auto space-y-6 animate-fade-in py-4">
+      <div class="space-y-3 text-center">
+        <h1 class="leading-tight">
+          <span class="block text-4xl sm:text-5xl font-black tracking-tight text-white mb-1.5">
+            FINFLAG
+          </span>
+          <span class="block text-lg sm:text-2xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-rose-400 via-amber-400 to-emerald-400">
+            Financial Influencer Content Evaluation Game
+          </span>
+        </h1>
+        <p class="text-slate-300 text-sm sm:text-base leading-relaxed max-w-xl mx-auto">
+          Learn to critically evaluate financial content created, posted, or presented by social media finfluencers.
+          Discover how to verify claims, check evidence, examine sources, and spot misleading red flags before you believe, act on, or share.
+        </p>
+      </div>
+
+      <!-- Core Focus Box -->
+      <div class="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-4 sm:p-5 text-xs sm:text-sm text-slate-300 space-y-2">
+        <div class="flex items-center gap-2 font-semibold text-amber-400 text-xs uppercase tracking-wider">
+          ℹ️ Core Evaluation Focus
+        </div>
+        <p class="text-slate-300 text-xs leading-relaxed">
+          FINFLAG presents <strong>35 realistic social media influencer scenarios</strong>.
+          Your task is to evaluate whether each finfluencer's statement is reliable, supported, credible, unbiased, and complete before deciding to accept or share it.
+        </p>
+      </div>
+
+      <!-- 5 Sections Overview -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+        <div class="bg-slate-800/50 border border-slate-800 rounded-xl p-3 flex items-start gap-3">
+          <span class="w-6 h-6 rounded-lg bg-slate-700/80 text-rose-400 flex items-center justify-center text-xs font-bold shrink-0">1</span>
+          <div>
+            <h3 class="text-xs font-semibold text-slate-200">Identify Content</h3>
+            <p class="text-[11px] text-slate-400 mt-0.5">Recognize finfluencers, financial claims, and why advice must be evaluated.</p>
+            <span class="text-[10px] text-slate-500 font-mono">Activities 1–7</span>
+          </div>
+        </div>
+        <div class="bg-slate-800/50 border border-slate-800 rounded-xl p-3 flex items-start gap-3">
+          <span class="w-6 h-6 rounded-lg bg-slate-700/80 text-rose-400 flex items-center justify-center text-xs font-bold shrink-0">2</span>
+          <div>
+            <h3 class="text-xs font-semibold text-slate-200">Claim & Evidence</h3>
+            <p class="text-[11px] text-slate-400 mt-0.5">Separate proof from anecdotes, screenshots, and vanity metrics like likes.</p>
+            <span class="text-[10px] text-slate-500 font-mono">Activities 8–14</span>
+          </div>
+        </div>
+        <div class="bg-slate-800/50 border border-slate-800 rounded-xl p-3 flex items-start gap-3">
+          <span class="w-6 h-6 rounded-lg bg-slate-700/80 text-rose-400 flex items-center justify-center text-xs font-bold shrink-0">3</span>
+          <div>
+            <h3 class="text-xs font-semibold text-slate-200">Source & Credibility</h3>
+            <p class="text-[11px] text-slate-400 mt-0.5">Check official licenses (SEC, BSP) and verify credentials and dates.</p>
+            <span class="text-[10px] text-slate-500 font-mono">Activities 15–21</span>
+          </div>
+        </div>
+        <div class="bg-slate-800/50 border border-slate-800 rounded-xl p-3 flex items-start gap-3">
+          <span class="w-6 h-6 rounded-lg bg-slate-700/80 text-rose-400 flex items-center justify-center text-xs font-bold shrink-0">4</span>
+          <div>
+            <h3 class="text-xs font-semibold text-slate-200">Red Flags & Bias</h3>
+            <p class="text-[11px] text-slate-400 mt-0.5">Spot "guaranteed returns", FOMO pressure, sponsorships, and omitted risks.</p>
+            <span class="text-[10px] text-slate-500 font-mono">Activities 22–28</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex flex-col sm:flex-row gap-3 pt-2">
+        <button onclick="startGame()" class="flex-1 flex items-center justify-center gap-2 py-3.5 px-6 rounded-xl bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-600 hover:to-amber-600 text-white font-bold text-sm sm:text-base shadow-lg shadow-rose-500/25 transition-all">
+          <span>START GAME (35 Activities)</span> →
+        </button>
+        <button onclick="showScreen('how-to-play')" class="flex items-center justify-center gap-2 py-3.5 px-5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-medium text-sm transition-colors">
+          <span>How to Play & Guide</span>
+        </button>
+      </div>
+      <p class="text-center text-[11px] text-slate-500">
+        Estimated duration: ~15–20 minutes • 35 multiple-choice evaluation activities.
+      </p>
+    </div>
+
+    <!-- SCREEN 2: HOW TO PLAY -->
+    <div id="screen-how-to-play" class="hidden max-w-2xl w-full mx-auto space-y-6 py-4 animate-fade-in">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <div>
+          <h2 class="text-2xl font-bold text-white">How to Play FINFLAG</h2>
+          <p class="text-xs text-slate-400">The 5-Pillar Finfluencer Content Evaluation System</p>
+        </div>
+        <button onclick="showScreen('start')" class="text-xs text-slate-400 hover:text-slate-200 px-3 py-1.5 rounded-lg bg-slate-800 border border-slate-700">
+          Back
+        </button>
+      </div>
+
+      <div class="space-y-3 text-sm text-slate-300">
+        <div class="bg-slate-800/60 p-4 rounded-xl border border-slate-700/60 flex gap-3">
+          <span class="w-7 h-7 rounded-lg bg-rose-500/20 text-rose-400 font-bold flex items-center justify-center shrink-0">1</span>
+          <div>
+            <h3 class="font-semibold text-slate-100">See the Finfluencer Content</h3>
+            <p class="text-xs text-slate-400 mt-1">Read the post, reel caption, or statement from the fictional finfluencer.</p>
+          </div>
+        </div>
+        <div class="bg-slate-800/60 p-4 rounded-xl border border-slate-700/60 flex gap-3">
+          <span class="w-7 h-7 rounded-lg bg-amber-500/20 text-amber-400 font-bold flex items-center justify-center shrink-0">2</span>
+          <div>
+            <h3 class="font-semibold text-slate-100">Check Claim & Evidence</h3>
+            <p class="text-xs text-slate-400 mt-1">Is it backed by verifiable data, or just personal anecdotes and follower count?</p>
+          </div>
+        </div>
+        <div class="bg-slate-800/60 p-4 rounded-xl border border-slate-700/60 flex gap-3">
+          <span class="w-7 h-7 rounded-lg bg-sky-500/20 text-sky-400 font-bold flex items-center justify-center shrink-0">3</span>
+          <div>
+            <h3 class="font-semibold text-slate-100">Check Source & Credibility</h3>
+            <p class="text-xs text-slate-400 mt-1">Verify regulatory licenses (SEC, BSP) and check if dates are current.</p>
+          </div>
+        </div>
+        <div class="bg-slate-800/60 p-4 rounded-xl border border-slate-700/60 flex gap-3">
+          <span class="w-7 h-7 rounded-lg bg-purple-500/20 text-purple-400 font-bold flex items-center justify-center shrink-0">4</span>
+          <div>
+            <h3 class="font-semibold text-slate-100">Spot Red Flags & Bias</h3>
+            <p class="text-xs text-slate-400 mt-1">Watch for guaranteed returns, artificial urgency, and paid sponsorships.</p>
+          </div>
+        </div>
+        <div class="bg-slate-800/60 p-4 rounded-xl border border-slate-700/60 flex gap-3">
+          <span class="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 font-bold flex items-center justify-center shrink-0">5</span>
+          <div>
+            <h3 class="font-semibold text-slate-100">Think Before Accepting or Sharing</h3>
+            <p class="text-xs text-slate-400 mt-1">Stop and evaluate the whole picture before believing or sharing with peers.</p>
+          </div>
+        </div>
+      </div>
+
+      <button onclick="startGame()" class="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-600 hover:to-amber-600 text-white font-bold text-sm sm:text-base shadow-lg shadow-rose-500/25 transition-all">
+        Start Game Now →
+      </button>
+    </div>
+
+    <!-- SCREEN 3: GAMEPLAY -->
+    <div id="screen-game" class="hidden max-w-2xl w-full mx-auto space-y-4 animate-fade-in py-2">
+      <!-- Section and Activity Counter -->
+      <div class="flex items-center justify-between pb-1 border-b border-slate-800">
+        <span id="activity-section-badge" class="text-xs uppercase font-extrabold tracking-wider px-2.5 py-1 rounded-md bg-rose-500/20 text-rose-300 border border-rose-500/30">
+          Section 1
+        </span>
+        <span class="text-xs font-mono font-bold text-slate-300">
+          Activity <span id="activity-number" class="text-amber-400">1</span> of 35
+        </span>
+      </div>
+
+      <!-- Social Post Card -->
+      <div class="bg-slate-800/90 border border-slate-700/80 rounded-2xl overflow-hidden shadow-xl shadow-black/40">
+        <div class="p-3.5 sm:p-4 bg-slate-800 border-b border-slate-700/60 flex items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <div id="influencer-avatar" class="w-11 h-11 rounded-full bg-gradient-to-tr from-pink-500 to-rose-500 flex items-center justify-center text-white font-bold text-base shadow-md">
+              M
+            </div>
+            <div>
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <span id="influencer-name" class="font-bold text-sm text-slate-100">Mika | Peso Guides</span>
+                <span id="influencer-handle" class="text-[11px] text-rose-400 bg-rose-400/10 px-1.5 py-0.2 rounded font-mono">@PesoWithMika</span>
+              </div>
+              <div class="flex items-center gap-2 text-[11px] text-slate-400 mt-0.5">
+                <span id="influencer-followers">320K followers</span>
+                <span>•</span>
+                <span class="text-amber-400 font-medium">✨ Finfluencer</span>
+              </div>
+            </div>
+          </div>
+          <span id="influencer-platform" class="text-[11px] px-2.5 py-1 rounded-full bg-slate-700/80 border border-slate-600 text-slate-300 font-medium">Reel</span>
+        </div>
+
+        <div class="p-4 sm:p-5 space-y-3 bg-gradient-to-b from-slate-800/40 to-slate-900/60">
+          <div id="content-tag-badge" class="inline-flex items-center gap-1.5 text-[11px] font-medium text-slate-400 bg-slate-800/80 px-2.5 py-0.5 rounded-full border border-slate-700">
+            <span class="w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+            <span id="content-tag-text">Finfluencer Post</span>
+          </div>
+          <div class="p-3.5 sm:p-4 rounded-xl bg-slate-950/60 border border-slate-700/50 shadow-inner">
+            <p id="influencer-content" class="text-base sm:text-lg font-medium text-slate-100 leading-relaxed italic">
+              Loading...
+            </p>
+          </div>
+          <div class="flex items-center justify-between text-xs text-slate-400 pt-1 px-1">
+            <div class="flex items-center gap-4">
+              <span>👍 <span id="influencer-likes">48.2K</span></span>
+              <span>💬 Comments</span>
+              <span>🔁 Share</span>
+            </div>
+            <span>🔖</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Question & Choices -->
+      <div class="bg-slate-800/60 border border-slate-700/80 rounded-2xl p-4 sm:p-5 space-y-4">
+        <div>
+          <span class="text-[11px] font-bold uppercase tracking-wider text-amber-400">Student Evaluation Task</span>
+          <h3 id="activity-question" class="text-base sm:text-lg font-semibold text-white mt-0.5 leading-snug">
+            Question text
+          </h3>
+        </div>
+
+        <!-- Options Container -->
+        <div id="options-container" class="space-y-2.5 pt-1">
+          <!-- Dynamic buttons inserted by JS -->
+        </div>
+
+        <!-- Feedback Container -->
+        <div id="feedback-container" class="hidden pt-3 border-t border-slate-700/70 space-y-3.5 animate-fade-in">
+          <div id="feedback-alert" class="p-4 rounded-xl border flex items-start gap-3">
+            <span id="feedback-icon" class="text-xl shrink-0 mt-0.5">✅</span>
+            <div class="space-y-1">
+              <p id="feedback-title" class="font-bold text-sm sm:text-base">Correct!</p>
+              <p id="feedback-text" class="text-xs sm:text-sm text-slate-300 leading-relaxed">Explanation...</p>
+            </div>
+          </div>
+          <button onclick="nextActivity()" id="next-btn" class="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-600 hover:to-amber-600 text-white font-bold text-sm sm:text-base shadow-lg shadow-rose-500/25 flex items-center justify-center gap-2 transition-all">
+            <span>NEXT →</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 4: COMPLETION -->
+    <div id="screen-complete" class="hidden max-w-2xl w-full mx-auto space-y-6 py-6 animate-fade-in">
+      <div class="text-center space-y-3 bg-gradient-to-b from-slate-800 to-slate-900 border border-slate-700/80 rounded-3xl p-6 sm:p-8 shadow-2xl">
+        <div class="text-4xl">🏆</div>
+        <h2 class="text-3xl sm:text-4xl font-black tracking-tight text-white">FINFLAG COMPLETE!</h2>
+        <div class="py-2">
+          <div class="text-5xl sm:text-6xl font-black font-mono tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-rose-400 to-emerald-400" id="final-score">
+            35 / 35
+          </div>
+          <p class="text-xs uppercase tracking-widest text-slate-400 mt-1 font-semibold">Activities Completed: 35 / 35</p>
+        </div>
+
+        <div class="bg-slate-950/70 border border-slate-800 rounded-2xl p-4 sm:p-5 text-left text-xs sm:text-sm text-slate-300 leading-relaxed">
+          <div class="text-amber-400 font-bold text-xs uppercase tracking-wider mb-1">Key Finfluencer Evaluation Rule:</div>
+          <blockquote class="italic font-medium text-slate-200">
+            «Before accepting or sharing financial content from a finfluencer, always check the claim, evidence, source, credibility, possible bias, risks, and missing information.»
+          </blockquote>
+        </div>
+      </div>
+
+      <!-- Checklist -->
+      <div class="bg-slate-800/40 border border-slate-800 rounded-2xl p-4 sm:p-5 space-y-3">
+        <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2">
+          🛡️ Finfluencer Content Evaluation Checklist
+        </h3>
+        <ul class="text-xs text-slate-300 space-y-2 list-disc list-inside">
+          <li><strong>Claim Check:</strong> Does the influencer make bold guarantees or promise wealth without disclosing risks?</li>
+          <li><strong>Evidence Check:</strong> Are they showing verified statistics, or just past personal profit screenshots and follower numbers?</li>
+          <li><strong>Source Check:</strong> Is the entity licensed by the SEC Philippines or supervised by the BSP? DTI registration alone does not permit taking investments.</li>
+          <li><strong>Bias & Sponsorship:</strong> Is it a paid partnership, affiliate promo code, or pump-and-dump promotion?</li>
+          <li><strong>Think Before Sharing:</strong> If an offer relies on recruiting new members (like online paluwagan) or urges urgency within minutes, never share it with peers.</li>
+        </ul>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex flex-col sm:flex-row gap-3">
+        <button onclick="startGame()" class="flex-1 flex items-center justify-center gap-2 py-3.5 px-6 rounded-xl bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-600 hover:to-amber-600 text-white font-bold text-sm sm:text-base shadow-lg shadow-rose-500/25 transition-all">
+          🔄 PLAY AGAIN
+        </button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-800/80 px-4 py-3 text-center text-xs text-slate-500 bg-slate-900/90">
+    <p>FINFLAG: Financial Influencer Content Evaluation Game</p>
+  </footer>
+
+  <!-- Script containing sound and full 35 activities -->
+  <script>
+    // Audio Synthesizer
+    let audioCtx = null;
+    let soundEnabled = true;
+
+    function initAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+    }
+
+    function toggleSound() {
+      soundEnabled = !soundEnabled;
+      document.getElementById('sound-btn').innerText = soundEnabled ? '🔊' : '🔇';
+      if (soundEnabled) playClick();
+    }
+
+    function playClick() {
+      if (!soundEnabled) return;
+      initAudio();
+      try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.frequency.setValueAtTime(500, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(250, audioCtx.currentTime + 0.05);
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.05);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.05);
+      } catch(e) {}
+    }
+
+    function playCorrect() {
+      if (!soundEnabled) return;
+      initAudio();
+      try {
+        const now = audioCtx.currentTime;
+        [523.25, 659.25, 783.99].forEach((freq, idx) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.07);
+          gain.gain.setValueAtTime(0.12, now + idx * 0.07);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.07 + 0.2);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now + idx * 0.07);
+          osc.stop(now + idx * 0.07 + 0.2);
+        });
+      } catch(e) {}
+    }
+
+    function playIncorrect() {
+      if (!soundEnabled) return;
+      initAudio();
+      try {
+        const now = audioCtx.currentTime;
+        [311.13, 277.18].forEach((freq, idx) => {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.1);
+          gain.gain.setValueAtTime(0.08, now + idx * 0.1);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.1 + 0.25);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now + idx * 0.1);
+          osc.stop(now + idx * 0.1 + 0.25);
+        });
+      } catch(e) {}
+    }
+
+    // 35 Activities Data
+    const ACTIVITIES = [
+      {
+        id: 1, sectionId: 1, sectionTitle: "Identify Content",
+        influencer: { handle: "@PesoWithMika", displayName: "Mika | Peso Guides", avatar: "M", platform: "Reel", followers: "320K", likes: "48.2K" },
+        content: "“Hey guys! Here is my morning routine: iced coffee, gym, and 3 high-yield Philippine dividend stocks that give me passive income every quarter! Drop a 🔥 for part 2!”",
+        tag: "Morning Routine & Stock Tips",
+        question: "What part of Mika’s post makes her content a financial influencer (finfluencer) post?",
+        options: [
+          { id: "A", text: "Her morning gym and coffee routine" },
+          { id: "B", text: "Her recommendation and discussion of specific dividend stocks for earning money" },
+          { id: "C", text: "Her request for followers to drop flame emojis in the comments" },
+          { id: "D", text: "The high video production quality and aesthetic lighting" }
+        ],
+        correct: "B", explanation: "Mika is acting as a finfluencer because she is sharing content specifically focused on investments and earning money."
+      },
+      {
+        id: 2, sectionId: 1, sectionTitle: "Identify Content",
+        influencer: { handle: "@FinanceKai", displayName: "Kai Santos • Daily Wealth", avatar: "K", platform: "TikTok", followers: "510K", likes: "92.4K" },
+        content: "“Stop keeping your allowance in a traditional savings account! Put 100% of your savings into this new digital token today if you want to become wealthy before graduation.”",
+        tag: "Token Recommendation",
+        question: "Which statement from Kai’s post is a financial claim?",
+        options: [
+          { id: "A", text: "“Stop keeping your allowance in a traditional savings account”" },
+          { id: "B", text: "“Hey everyone, welcome back to my channel”" },
+          { id: "C", text: "“Graduation is approaching soon for senior high students”" },
+          { id: "D", text: "“Put 100% of your savings into this new digital token today if you want to become wealthy before graduation”" }
+        ],
+        correct: "D", explanation: "A financial claim asserts that taking a specific financial action (investing in a token) will produce a financial outcome (becoming wealthy)."
+      },
+      {
+        id: 3, sectionId: 1, sectionTitle: "Identify Content",
+        influencer: { handle: "@MoneyTipsPH", displayName: "Money Tips PH", avatar: "M", platform: "Feed Post", followers: "195K", likes: "14.1K" },
+        content: "“I just saw this viral video claiming you can turn ₱500 into ₱50,000 in one week using an automated trading bot. Should you follow it immediately?”",
+        tag: "Viral Trading Bot Post",
+        question: "Why should students evaluate financial influencer content instead of following it right away?",
+        options: [
+          { id: "A", text: "Because social media algorithms only promote certified financial advisers" },
+          { id: "B", text: "Because finfluencers are legally required to refund your money if you lose" },
+          { id: "C", text: "Because anyone can post financial advice online without licenses, proof, or regulation" },
+          { id: "D", text: "Because all financial advice on social media is verified by the government before posting" }
+        ],
+        correct: "C", explanation: "Anyone with a smartphone can post financial opinions online without credentials or accountability, which means students must critically evaluate what they see."
+      },
+      {
+        id: 4, sectionId: 1, sectionTitle: "Identify Content",
+        influencer: { handle: "@BudgetWithJules", displayName: "Jules | Student Budgeting", avatar: "J", platform: "Carousel", followers: "88K", likes: "9.3K" },
+        content: "“Sharing my weekly allowance breakdown as a working college student in Manila: 40% food, 20% fare, 20% school supplies, 20% savings.”",
+        tag: "Personal Budget Breakdown",
+        question: "How can this post best be identified?",
+        options: [
+          { id: "A", text: "A guaranteed investment contract requiring government registration" },
+          { id: "B", text: "Personal lifestyle budgeting content sharing personal financial habits" },
+          { id: "C", text: "An official government-mandated financial spending guideline" },
+          { id: "D", text: "An illegal investment scheme requiring police reporting" }
+        ],
+        correct: "B", explanation: "Jules is sharing personal budgeting practices from her own daily experience, not an official guideline or investment contract."
+      },
+      {
+        id: 5, sectionId: 1, sectionTitle: "Identify Content",
+        influencer: { handle: "@PinoyFinanceHub", displayName: "Pinoy Finance Hub", avatar: "P", platform: "Feed Post", followers: "240K", likes: "31.5K" },
+        content: "“Unpopular opinion: Real estate is the only real investment. Stocks and bonds are useless for Filipino youth in 2026.”",
+        tag: "Controversial Asset Claim",
+        question: "What makes this statement a financial opinion rather than an established financial fact?",
+        options: [
+          { id: "A", text: "It uses English and Tagalog words in the same sentence" },
+          { id: "B", text: "It was posted on a weekday evening" },
+          { id: "C", text: "It makes a sweeping judgment about asset classes without empirical data or balanced analysis" },
+          { id: "D", text: "It has fewer than 100,000 likes" }
+        ],
+        correct: "C", explanation: "Asserting that one asset is the \"only real investment\" is a subjective personal opinion that ignores diverse financial goals and verified market data."
+      },
+      {
+        id: 6, sectionId: 1, sectionTitle: "Identify Content",
+        influencer: { handle: "@StudentWealthPH", displayName: "Student Wealth PH", avatar: "S", platform: "TikTok", followers: "142K", likes: "22.8K" },
+        content: "“Top 3 legitimate ways Senior High students earn extra money online: freelance graphic design, tutorial services, and affiliate marketing.”",
+        tag: "Student Side Hustles",
+        question: "What type of financial influencer content is being presented here?",
+        options: [
+          { id: "A", text: "An income-generation and side-hustle informational post" },
+          { id: "B", text: "A government-mandated corporate tax advisory" },
+          { id: "C", text: "A high-risk foreign exchange derivative contract" },
+          { id: "D", text: "A personal complaint about school tuition fees" }
+        ],
+        correct: "A", explanation: "The post provides educational/informational suggestions regarding side-income opportunities for students."
+      },
+      {
+        id: 7, sectionId: 1, sectionTitle: "Identify Content",
+        influencer: { handle: "@CryptoKuyaPH", displayName: "Crypto Kuya 🚀", avatar: "C", platform: "Story", followers: "410K", likes: "63.9K" },
+        content: "“Why work 8 hours a day when this secret web3 game can replace your future college degree? Click the link in my bio to start!”",
+        tag: "Web3 Game Hype",
+        question: "Why is it crucial to recognize the financial claim in this post before deciding to click the link?",
+        options: [
+          { id: "A", text: "To see how many followers liked the video" },
+          { id: "B", text: "To identify that the creator is claiming a game can replace long-term career education and financial stability" },
+          { id: "C", text: "To check what smartphone brand the creator is using" },
+          { id: "D", text: "To identify the background music artist" }
+        ],
+        correct: "B", explanation: "Identifying the creator’s underlying claim allows you to pause and critically examine whether such a bold promise is realistic and safe."
+      },
+      {
+        id: 8, sectionId: 2, sectionTitle: "Claim & Evidence",
+        influencer: { handle: "@InvestNiKuya", displayName: "Invest Ni Kuya", avatar: "I", platform: "Reel", followers: "280K", likes: "51.3K" },
+        content: "“This local retail stock is guaranteed to double in 30 days! Look at my screenshot showing my personal ₱100,000 gain last Friday!”",
+        tag: "Profit Screenshot Showcase",
+        question: "Why is Kuya’s profit screenshot insufficient evidence to prove his claim?",
+        options: [
+          { id: "A", text: "Stocks in the Philippines are not allowed to be traded on Fridays" },
+          { id: "B", text: "₱100,000 is too small an amount for any investor to mention" },
+          { id: "C", text: "Screenshots of past personal profit do not prove future performance and can easily be fabricated or cherry-picked" },
+          { id: "D", text: "Kuya did not mention the exact time he took the screenshot" }
+        ],
+        correct: "C", explanation: "A personal screenshot only shows one past moment (or could be fake/edited) and does not provide valid market research or reliable evidence of future returns."
+      },
+      {
+        id: 9, sectionId: 2, sectionTitle: "Claim & Evidence",
+        influencer: { handle: "@WealthGalPH", displayName: "Bea | Wealth Gal PH", avatar: "W", platform: "TikTok", followers: "690K", likes: "105K" },
+        content: "“Over 1.2 million Filipinos have joined our affiliate club, so there is zero chance our program fails! The numbers speak for themselves.”",
+        tag: "Enrollment Numbers Post",
+        question: "What error in evaluation occurs if a student believes this claim based solely on the number of members?",
+        options: [
+          { id: "A", text: "Checking whether the business is registered with the SEC Philippines" },
+          { id: "B", text: "Comparing the club’s business model to a bank deposit" },
+          { id: "C", text: "Checking the exact date of the publication" },
+          { id: "D", text: "Assuming that popularity and high enrollment are proof of legitimacy and financial soundness" }
+        ],
+        correct: "D", explanation: "High member counts or viral popularity do not prove a financial scheme is sound; even fraudulent pyramid schemes have attracted millions of participants."
+      },
+      {
+        id: 10, sectionId: 2, sectionTitle: "Claim & Evidence",
+        influencer: { handle: "@CoachArisPH", displayName: "Coach Aris • Insights", avatar: "A", platform: "Feed Post", followers: "175K", likes: "18.4K" },
+        content: "“According to the 2024 BSP Financial Inclusion Survey, 56% of Filipino adults now hold a financial account, up from previous years.”",
+        tag: "BSP Survey Data Citation",
+        question: "What makes Coach Aris’s statement supported by credible evidence?",
+        options: [
+          { id: "A", text: "He cites a specific, recognized statistical survey from the Bangko Sentral ng Pilipinas (BSP)" },
+          { id: "B", text: "He uses a dramatic and confident voice tone in his video" },
+          { id: "C", text: "His video received over 50,000 comments on Facebook" },
+          { id: "D", text: "He is wearing a formal suit in his profile picture" }
+        ],
+        correct: "A", explanation: "The claim is supported because it explicitly references verifiable statistical data from an official primary institution (BSP)."
+      },
+      {
+        id: 11, sectionId: 2, sectionTitle: "Claim & Evidence",
+        influencer: { handle: "@DiskarteDailyPH", displayName: "Diskarte Daily PH", avatar: "D", platform: "Story", followers: "340K", likes: "44.7K" },
+        content: "“99% of people who don’t buy my ₱999 e-book will stay broke for the rest of their lives! Scientific studies prove this!”",
+        tag: "E-Book Promotion Statistic",
+        question: "What is wrong with the statistic presented in this post?",
+        options: [
+          { id: "A", text: "It uses Philippine Pesos instead of US Dollars" },
+          { id: "B", text: "The e-book price is not an even number" },
+          { id: "C", text: "It makes an unsubstantiated, exaggerated statistical claim without naming any real study or methodology" },
+          { id: "D", text: "The post was written with punctuation marks" }
+        ],
+        correct: "C", explanation: "Claiming \"99%\" and \"scientific studies prove this\" without citing any verifiable source, author, or research paper is an unsupported statistical claim."
+      },
+      {
+        id: 12, sectionId: 2, sectionTitle: "Claim & Evidence",
+        influencer: { handle: "@PesoWithMika", displayName: "Mika | Peso Guides", avatar: "M", platform: "TikTok", followers: "320K", likes: "39.8K" },
+        content: "“I used this savings app for 6 months and saved ₱15,000. It worked wonders for me, so it is 100% the best choice for every Filipino student.”",
+        tag: "Personal Savings Testimonial",
+        question: "What is the limitation of Mika’s evidence?",
+        options: [
+          { id: "A", text: "She saved in Philippine Pesos rather than foreign currency" },
+          { id: "B", text: "Six months is too long to evaluate any financial application" },
+          { id: "C", text: "Savings apps are illegal for Senior High School students" },
+          { id: "D", text: "Personal testimonial is anecdotal experience and does not prove the app is optimal or suitable for all students’ situations" }
+        ],
+        correct: "D", explanation: "Anecdotal evidence describes one individual’s personal journey, which cannot be generalized as the best solution for everyone with different financial needs."
+      },
+      {
+        id: 13, sectionId: 2, sectionTitle: "Claim & Evidence",
+        influencer: { handle: "@SmartIponPH", displayName: "Smart Ipon PH", avatar: "S", platform: "Carousel", followers: "190K", likes: "28.1K" },
+        content: "“Pag-IBIG MP2 declared a 7.05% dividend rate for the past year. You can verify this on the official Pag-IBIG Fund website reports.”",
+        tag: "Government Fund Dividend Report",
+        question: "How does this influencer support their claim?",
+        options: [
+          { id: "A", text: "By directing viewers to verifiable official records from a government fund" },
+          { id: "B", text: "By showing a photo of a luxury car they bought" },
+          { id: "C", text: "By claiming they have secret insider connections" },
+          { id: "D", text: "By promising a formula to double money overnight" }
+        ],
+        correct: "A", explanation: "Directing viewers to check public government reports allows independent verification of the exact historical dividend rates."
+      },
+      {
+        id: 14, sectionId: 2, sectionTitle: "Claim & Evidence",
+        influencer: { handle: "@TradingBroPH", displayName: "Bro Dan | Crypto Trader", avatar: "B", platform: "Reel", followers: "450K", likes: "81.2K" },
+        content: "“Trust me bro, this new coin is about to pump 500x. My mentor has 2 million followers on TikTok and he recommended it yesterday!”",
+        tag: "500x Coin Recommendation",
+        question: "Why does the mentor’s 2 million follower count NOT count as reliable evidence?",
+        options: [
+          { id: "A", text: "Anyone with 2 million followers works for the Philippine Stock Exchange" },
+          { id: "B", text: "Follower counts reflect social reach and popularity, not financial truth, market proof, or technical validity" },
+          { id: "C", text: "TikTok prohibits accounts from having more than 1 million followers" },
+          { id: "D", text: "Follower numbers only represent bots and can never be real people" }
+        ],
+        correct: "B", explanation: "High follower count is a vanity metric; popularity can be bought or built on entertainment and does not constitute factual market evidence."
+      },
+      {
+        id: 15, sectionId: 3, sectionTitle: "Source & Credibility",
+        influencer: { handle: "@FinGuruDan", displayName: "Dan • Fast Profits", avatar: "D", platform: "Feed Post", followers: "160K", likes: "19.4K" },
+        content: "“This investment firm is offering 25% returns every month! They are completely legitimate because they have an active Facebook page and a DTI business name registration.”",
+        tag: "DTI Registration Argument",
+        question: "Why does a DTI business name registration alone NOT prove an entity is licensed to solicit investments from the public?",
+        options: [
+          { id: "A", text: "DTI registrations expire every 24 hours" },
+          { id: "B", text: "Only international commercial banks are allowed to register with the DTI" },
+          { id: "C", text: "Facebook pages automatically replace government business licenses" },
+          { id: "D", text: "DTI only registers sole proprietorship business names, while taking public investments requires a secondary license from the SEC Philippines" }
+        ],
+        correct: "D", explanation: "In the Philippines, a DTI registration merely registers a business name; soliciting investments legally requires an explicit secondary license from the Securities and Exchange Commission (SEC)."
+      },
+      {
+        id: 16, sectionId: 3, sectionTitle: "Source & Credibility",
+        influencer: { handle: "@FinanceKai", displayName: "Kai Santos • Daily Wealth", avatar: "K", platform: "Feed Post", followers: "510K", likes: "45.1K" },
+        content: "“Check out this circular released by the Bangko Sentral ng Pilipinas regarding consumer protection standards for digital payment platforms.”",
+        tag: "BSP Consumer Circular Post",
+        question: "Why is the Bangko Sentral ng Pilipinas (BSP) considered a credible primary source for financial regulations?",
+        options: [
+          { id: "A", text: "It is the central monetary authority and official banking regulator of the Philippines" },
+          { id: "B", text: "It is a private marketing company run by social media creators" },
+          { id: "C", text: "It distributes shopping promo discounts to teenagers" },
+          { id: "D", text: "It has the highest number of subscribers on YouTube" }
+        ],
+        correct: "A", explanation: "The BSP is the official government institution mandated by Philippine law to supervise banks and maintain financial system stability."
+      },
+      {
+        id: 17, sectionId: 3, sectionTitle: "Source & Credibility",
+        influencer: { handle: "@DailyPesos", displayName: "Daily Pesos PH", avatar: "D", platform: "Story", followers: "95K", likes: "12.3K" },
+        content: "“I have been trading forex for 2 weeks in my bedroom and made ₱5,000, so I am now accepting ₱10,000 from students to trade on your behalf!”",
+        tag: "Fund Management Solicitation",
+        question: "When evaluating this influencer’s credibility, what major qualification red flag should you notice?",
+        options: [
+          { id: "A", text: "The influencer operates out of a bedroom" },
+          { id: "B", text: "The post was published in the afternoon instead of morning" },
+          { id: "C", text: "Two weeks of casual experience does not qualify someone as a licensed, authorized fund manager or broker" },
+          { id: "D", text: "The influencer did not state their favorite currency pair" }
+        ],
+        correct: "C", explanation: "Managing other people’s money requires rigorous legal licensing (such as an SEC broker/investment adviser license) and substantial professional credentials, not two weeks of amateur trading."
+      },
+      {
+        id: 18, sectionId: 3, sectionTitle: "Source & Credibility",
+        influencer: { handle: "@PinoyFinanceHub", displayName: "Pinoy Finance Hub", avatar: "P", platform: "Carousel", followers: "240K", likes: "38.6K" },
+        content: "“Look at this screenshot of an SEC Philippines Public Advisory warning that Company XYZ is operating an unauthorized investment scheme.”",
+        tag: "SEC Advisory Screenshot",
+        question: "What is the most reliable way to verify if this SEC Advisory is real?",
+        options: [
+          { id: "A", text: "Ask the promoters of Company XYZ if they agree with the post" },
+          { id: "B", text: "Visit the official SEC Philippines website (sec.gov.ph) and look under the official Advisories section" },
+          { id: "C", text: "Check if the advisory screenshot has at least 1,000 retweets" },
+          { id: "D", text: "Wait for another TikTok influencer to make a dance video about it" }
+        ],
+        correct: "B", explanation: "Checking directly with the official primary government source website confirms whether the advisory is authentic and unaltered."
+      },
+      {
+        id: 19, sectionId: 3, sectionTitle: "Source & Credibility",
+        influencer: { handle: "@MarketMavenPH", displayName: "Market Maven PH", avatar: "M", platform: "Feed Post", followers: "110K", likes: "15.2K" },
+        content: "“Treasury bills are paying 12% interest this year! You need to buy them right now!” (Post timestamp: October 2004)",
+        tag: "Historical Yield Post (Outdated)",
+        question: "Why is checking the publication date essential when evaluating this influencer’s post?",
+        options: [
+          { id: "A", text: "Posts older than one week are automatically deleted by law" },
+          { id: "B", text: "Treasury bills were permanently abolished after the year 2010" },
+          { id: "C", text: "Government securities can only be purchased on Mondays" },
+          { id: "D", text: "Interest rates change over time, so financial data from years ago may be completely outdated and inaccurate today" }
+        ],
+        correct: "D", explanation: "Financial metrics like interest rates, yields, and inflation constantly fluctuate; relying on outdated information leads to incorrect financial decisions."
+      },
+      {
+        id: 20, sectionId: 3, sectionTitle: "Source & Credibility",
+        influencer: { handle: "@CollegeMoneyMatters", displayName: "College Money Matters", avatar: "C", platform: "TikTok", followers: "130K", likes: "24.9K" },
+        content: "“Influencer A says digital banks are dangerous, but Influencer B says they are 100% risk-free. Who should you believe?”",
+        tag: "Conflicting Opinions Discussion",
+        question: "What is the best step when two finfluencers provide conflicting claims?",
+        options: [
+          { id: "A", text: "Believe whichever influencer has more likes on their video" },
+          { id: "B", text: "Pick the influencer whose video has nicer video editing and upbeat music" },
+          { id: "C", text: "Cross-check with official sources like the BSP and Philippine Deposit Insurance Corporation (PDIC) deposit insurance rules" },
+          { id: "D", text: "Post an angry comment on both creators’ accounts" }
+        ],
+        correct: "C", explanation: "When opinions clash, students should consult official regulatory authorities (like BSP and PDIC) to find factual, unbiased policies and safety limits (such as PDIC ₱500,000 maximum deposit insurance)."
+      },
+      {
+        id: 21, sectionId: 3, sectionTitle: "Source & Credibility",
+        influencer: { handle: "@StockGuruNoli", displayName: "Noli • Stock Guru", avatar: "N", platform: "Story", followers: "215K", likes: "34.2K" },
+        content: "“I call myself a ‘Certified Financial Master Wizard’ and you must follow my stock portfolio picks without question.”",
+        tag: "Self-Invented Title",
+        question: "What should you evaluate regarding Noli’s claimed title?",
+        options: [
+          { id: "A", text: "Verify whether the credential is recognized by legitimate professional regulatory bodies (e.g., RFP, CFA, SEC license) or is just an invented marketing label" },
+          { id: "B", text: "Check if the word \"Wizard\" is spelled correctly in his bio" },
+          { id: "C", text: "Assume he must be certified if he put the words in quotation marks" },
+          { id: "D", text: "Ask how much his gold wristwatch cost" }
+        ],
+        correct: "A", explanation: "Unregulated or self-invented titles do not represent official accreditation; verified credentials must be issued by recognized professional organizations or regulators."
+      },
+      {
+        id: 22, sectionId: 4, sectionTitle: "Red Flags & Bias",
+        influencer: { handle: "@GetRichQuickPH", displayName: "Fast Wealth Hub", avatar: "F", platform: "Feed Post", followers: "310K", likes: "49.8K" },
+        content: "“Earn 30% GUARANTEED profit every month with ZERO RISK! Your principal deposit is 100% safe with us. PM me to join!”",
+        tag: "Guaranteed 30% Monthly Offer",
+        question: "What classic financial red flag is present in this post?",
+        options: [
+          { id: "A", text: "Requiring interested people to send a private message" },
+          { id: "B", text: "Offering 30% instead of 35%" },
+          { id: "C", text: "Using exclamation marks in the caption" },
+          { id: "D", text: "Promising guaranteed high returns with zero risk, which violates the fundamental financial principle that all investments carry risk" }
+        ],
+        correct: "D", explanation: "High returns are never guaranteed without risk; legitimate investments fluctuate, and \"guaranteed 30% monthly with zero risk\" is the hallmark of an illegal Ponzi or pyramid scam."
+      },
+      {
+        id: 23, sectionId: 4, sectionTitle: "Red Flags & Bias",
+        influencer: { handle: "@FastCashPinoy", displayName: "Pinoy Fast Cash", avatar: "P", platform: "Story", followers: "180K", likes: "29.3K" },
+        content: "“ONLY 5 SLOTS LEFT! If you don’t send your ₱2,000 registration fee within the next 20 minutes, you will lose this once-in-a-lifetime opportunity forever!”",
+        tag: "Urgency & Scarcity Countdown",
+        question: "What psychological tactic is this influencer using to discourage critical thinking?",
+        options: [
+          { id: "A", text: "Evidence-based comparative analysis" },
+          { id: "B", text: "High-pressure urgency and artificial scarcity (FOMO) to force quick emotional decisions before the student can verify the offer" },
+          { id: "C", text: "Educational patience and thorough risk disclosure" },
+          { id: "D", text: "Strict compliance with government registration requirements" }
+        ],
+        correct: "B", explanation: "Urgency and artificial scarcity rush people into sending money before they have time to evaluate risks or check company legitimacy."
+      },
+      {
+        id: 24, sectionId: 4, sectionTitle: "Red Flags & Bias",
+        influencer: { handle: "@PesoWithMika", displayName: "Mika | Peso Guides", avatar: "M", platform: "Reel", followers: "320K", likes: "41.5K" },
+        content: "“This new trading app is the only app you will ever need! (Paid Partnership with AppCompanyX | Use my promo code MIKA50 for a sign-up commission!)”",
+        tag: "Sponsored Affiliate Endorsement",
+        question: "Why must students consider the sponsorship disclosure when evaluating Mika’s recommendation?",
+        options: [
+          { id: "A", text: "Sponsored posts are prohibited by Philippine laws" },
+          { id: "B", text: "Promo codes never grant users sign-up bonuses" },
+          { id: "C", text: "The influencer has a financial incentive (commission) to praise the product, which introduces potential bias" },
+          { id: "D", text: "Influencers are not legally allowed to use smartphones" }
+        ],
+        correct: "C", explanation: "When creators are paid or receive commissions, their recommendation may be influenced by commercial gain rather than purely objective advice."
+      },
+      {
+        id: 25, sectionId: 4, sectionTitle: "Red Flags & Bias",
+        influencer: { handle: "@CryptoBroJay", displayName: "Jay | Crypto Bro", avatar: "J", platform: "TikTok", followers: "480K", likes: "96.2K" },
+        content: "“Look at how fast this meme coin went up by 800% yesterday! If you bought last week, you would be rich right now!”",
+        tag: "800% Coin Rally Video",
+        question: "What crucial financial information is omitted (missing) from Jay’s post?",
+        options: [
+          { id: "A", text: "The official dates of next year’s Philippine school breaks" },
+          { id: "B", text: "The creator’s favorite color and hobbies" },
+          { id: "C", text: "The model number of his camera setup" },
+          { id: "D", text: "The extreme volatility, downside risks, and likelihood of sudden massive price crashes where investors can lose everything" }
+        ],
+        correct: "D", explanation: "Showing only astronomical upside while omitting extreme volatility, liquidity issues, and the risk of total loss creates a misleading, one-sided picture."
+      },
+      {
+        id: 26, sectionId: 4, sectionTitle: "Red Flags & Bias",
+        influencer: { handle: "@CoachArisPH", displayName: "Coach Aris • Insights", avatar: "A", platform: "Story", followers: "175K", likes: "21.0K" },
+        content: "“Take out a quick online loan to invest in my foreign exchange trading signal group! You will easily pay off the loan with your profits!”",
+        tag: "Borrowing to Invest Advice",
+        question: "Why is this recommendation a major financial red flag?",
+        options: [
+          { id: "A", text: "Borrowing money (leverage) to invest in high-risk speculative trading exposes students to severe debt if the trade loses" },
+          { id: "B", text: "Online loans can only be repaid in physical minted coins" },
+          { id: "C", text: "Foreign exchange trading only occurs on Philippine holidays" },
+          { id: "D", text: "Coach Aris used too few emojis in his caption" }
+        ],
+        correct: "A", explanation: "Urging students to borrow money for speculative investments amplifies risk dramatically, potentially trapping students in crippling high-interest debt."
+      },
+      {
+        id: 27, sectionId: 4, sectionTitle: "Red Flags & Bias",
+        influencer: { handle: "@InvestNiKuya", displayName: "Invest Ni Kuya", avatar: "I", platform: "Carousel", followers: "280K", likes: "35.4K" },
+        content: "“Here are the advantages of real estate: passive rental income and value appreciation. I won’t mention any disadvantages because there are none!”",
+        tag: "One-Sided Asset Guide",
+        question: "How can this content be evaluated regarding balanced reporting?",
+        options: [
+          { id: "A", text: "It is completely balanced because real estate has no possible downsides" },
+          { id: "B", text: "It is one-sided and biased because it ignores real risks like vacancy, maintenance costs, property taxes, and liquidity constraints" },
+          { id: "C", text: "It provides direct statistical proof from the Philippine government" },
+          { id: "D", text: "It meets all international investment reporting standards" }
+        ],
+        correct: "B", explanation: "Every financial asset has trade-offs and risks; claiming an investment has \"zero disadvantages\" shows clear bias and incomplete information."
+      },
+      {
+        id: 28, sectionId: 4, sectionTitle: "Red Flags & Bias",
+        influencer: { handle: "@TrendyTradePH", displayName: "Trendy Trade PH", avatar: "T", platform: "Feed Post", followers: "220K", likes: "39.0K" },
+        content: "“I am buying this stock right now! Everyone should buy it too! (Hidden footnote: I bought this stock 3 days ago at a cheap price and plan to sell my shares today)”",
+        tag: "Stock Hype Call",
+        question: "What ethical issue and conflict of interest is happening here?",
+        options: [
+          { id: "A", text: "The influencer is practicing healthy portfolio diversification" },
+          { id: "B", text: "The influencer is hyping up a stock to followers so they can dump their own shares at an inflated price (Pump and Dump)" },
+          { id: "C", text: "The influencer is complying with SEC public disclosure rules" },
+          { id: "D", text: "The influencer forgot to set their account to private" }
+        ],
+        correct: "B", explanation: "A conflict of interest occurs when an influencer urges followers to buy an asset solely to drive up its price so the influencer can sell for personal profit."
+      },
+      {
+        id: 29, sectionId: 5, sectionTitle: "Think & Share",
+        influencer: { handle: "@PesoWithMika", displayName: "Mika | Peso Guides", avatar: "M", platform: "Story", followers: "320K", likes: "58.4K" },
+        content: "“Students, join this Paluwagan Online 2.0! Pay ₱1,000 today and receive ₱5,000 next Sunday when new members join under you! Reshare to your class group chat!”",
+        tag: "Online Paluwagan Invitation",
+        question: "Before sharing this to your high school classmates, what evaluation should you make?",
+        options: [
+          { id: "A", text: "Check if your classmates currently have enough allowance saved up" },
+          { id: "B", text: "Check what font style Mika used for the promo graphic" },
+          { id: "C", text: "Immediately forward it so you can receive the referral reward first" },
+          { id: "D", text: "Recognize that relying on money from newer members to pay older members is the classic structure of an illegal Ponzi/pyramid scheme, so it should not be accepted or shared" }
+        ],
+        correct: "D", explanation: "Unregistered online paluwagan schemes that pay returns derived from new recruit contributions are illegal pyramid schemes; sharing them harms your classmates."
+      },
+      {
+        id: 30, sectionId: 5, sectionTitle: "Think & Share",
+        influencer: { handle: "@FinanceKai", displayName: "Kai Santos • Daily Wealth", avatar: "K", platform: "Carousel", followers: "510K", likes: "72.3K" },
+        content: "“New micro-investing feature launched by a major BSP-supervised digital bank: allows students 18+ to invest starting at ₱50 with complete risk disclosures and SEC-registered mutual fund partners.”",
+        tag: "Digital Bank Micro-Investing Guide",
+        question: "After evaluating the claim, source, and disclosures, what makes this content reasonable to accept as legitimate information?",
+        options: [
+          { id: "A", text: "It is supervised by the BSP, partners with SEC-registered funds, has clear risk disclosures, and makes realistic claims" },
+          { id: "B", text: "The influencer has charismatic body language and speaks fluent English" },
+          { id: "C", text: "The post has accumulated over 70,000 likes on social media" },
+          { id: "D", text: "It promises that users will never experience a single day of loss" }
+        ],
+        correct: "A", explanation: "Legitimate financial content clearly identifies regulatory oversight (BSP/SEC), transparently discusses risks, and sets realistic expectations."
+      },
+      {
+        id: 31, sectionId: 5, sectionTitle: "Think & Share",
+        influencer: { handle: "@CryptoKuyaPH", displayName: "Crypto Kuya 🚀", avatar: "C", platform: "Story", followers: "410K", likes: "49.1K" },
+        content: "“I received an exclusive DM from an overseas millionaire offering a private crypto staking pool. Send your USDT now before midnight to get 10x returns!”",
+        tag: "Private Staking Pool Offer",
+        question: "Combining your evaluation skills (source, credibility, pressure tactics, and guarantees), what is the safest course of action?",
+        options: [
+          { id: "A", text: "Send half the requested amount to test if the returns are real" },
+          { id: "B", text: "Forward the DM screenshot to all your social media followers" },
+          { id: "C", text: "Reject the offer completely and do not share it, as unverified private DMs with unrealistic returns and urgent deadlines are typical scams" },
+          { id: "D", text: "Borrow money from your classmates to invest before midnight" }
+        ],
+        correct: "C", explanation: "Multiple glaring red flags (unverified private source, urgent countdown, unrealistic 10x promise) indicate an aggressive scam that must be rejected."
+      },
+      {
+        id: 32, sectionId: 5, sectionTitle: "Think & Share",
+        influencer: { handle: "@MoneyTipsPH", displayName: "Money Tips PH", avatar: "M", platform: "Reel", followers: "195K", likes: "37.8K" },
+        content: "“This student saved ₱20,000 during high school by bringing packed lunch (baon), tracking expenses on a notebook, and depositing money into a PDIC-insured savings account.”",
+        tag: "Student Baon Savings Case Study",
+        question: "Why is this post credible and safe to consider for practical student habits?",
+        options: [
+          { id: "A", text: "It promotes practical, realistic personal financial discipline and mentions institutional safety (PDIC insurance) rather than get-rich-quick shortcuts" },
+          { id: "B", text: "It guarantees that packed lunches will make every student a billionaire in 30 days" },
+          { id: "C", text: "The influencer paid ₱10,000 in advertising spend to promote the reel" },
+          { id: "D", text: "It requires viewers to buy an expensive VIP community membership" }
+        ],
+        correct: "A", explanation: "The advice relies on realistic budgeting habits, verifiable deposit protections, and makes no exaggerated or impossible claims."
+      },
+      {
+        id: 33, sectionId: 5, sectionTitle: "Think & Share",
+        influencer: { handle: "@DiskarteDailyPH", displayName: "Diskarte Daily PH", avatar: "D", platform: "TikTok", followers: "340K", likes: "89.6K" },
+        content: "“BREAKING: The Philippine stock market is crashing tomorrow! Sell all your family’s assets and buy gold bars immediately from my link!”",
+        tag: "Urgent Market Crash Warning",
+        question: "Your friend is panicked and wants to reshare this post to their family group chat. What should you advise your friend?",
+        options: [
+          { id: "A", text: "Reshare it immediately so everyone panics at the exact same time" },
+          { id: "B", text: "Help them purchase gold bars from the influencer’s affiliate link right away" },
+          { id: "C", text: "Immediately deactivate their social media account" },
+          { id: "D", text: "Pause and verify through official business news outlets and Philippine Stock Exchange (PSE) announcements before spreading unverified fear-mongering and commercial links" }
+        ],
+        correct: "D", explanation: "Sensationalized alarmist content designed to create panic and push affiliate sales should never be shared without verification from official financial news and market regulators."
+      },
+      {
+        id: 34, sectionId: 5, sectionTitle: "Think & Share",
+        influencer: { handle: "@BudgetWithJules", displayName: "Jules | Student Budgeting", avatar: "J", platform: "Feed Post", followers: "88K", likes: "16.5K" },
+        content: "“Thinking of investing in an equity fund? Remember: equities offer higher growth potential over 5–10 years, but short-term drops are normal. Only invest money you won’t need immediately.”",
+        tag: "Balanced Investment Horizon Advice",
+        question: "What critical evaluation indicator demonstrates that Jules is providing balanced financial content?",
+        options: [
+          { id: "A", text: "She promises quick riches within 48 hours for student investors" },
+          { id: "B", text: "She urges viewers to invest their school tuition fees" },
+          { id: "C", text: "She acknowledges both the potential benefits (long-term growth) and the associated risks (short-term volatility and liquidity needs)" },
+          { id: "D", text: "She hides the fact that investments can lose value" }
+        ],
+        correct: "C", explanation: "Balanced content transparently presents both potential rewards and realistic risks, helping students make informed, non-impulsive decisions."
+      },
+      {
+        id: 35, sectionId: 5, sectionTitle: "Think & Share",
+        influencer: { handle: "@PinoyFinanceHub", displayName: "Pinoy Finance Hub", avatar: "P", platform: "Carousel", followers: "240K", likes: "62.4K" },
+        content: "“Final rule for every Senior High School student: Before you believe, invest in, or share ANY financial post you see online, what checklist should you always follow?”",
+        tag: "FINFLAG Evaluation Summary",
+        question: "Which comprehensive checklist should a student use to evaluate finfluencer content?",
+        options: [
+          { id: "A", text: "Just check how many likes, views, and followers the creator has" },
+          { id: "B", text: "Evaluate the claim, verify the evidence, check the source credibility, spot red flags and bias, and consider missing risks" },
+          { id: "C", text: "Only check if the influencer is wearing professional business clothes" },
+          { id: "D", text: "Follow whatever advice appears first on your algorithm feed" }
+        ],
+        correct: "B", explanation: "A thorough evaluation requires examining the claim, checking evidence, verifying source credibility, uncovering bias and red flags, and noting missing risks before acting or sharing."
+      }
+    ];
+
+    let currentIndex = 0;
+    let score = 0;
+    let answered = false;
+
+    function showScreen(name) {
+      document.getElementById('screen-start').classList.add('hidden');
+      document.getElementById('screen-how-to-play').classList.add('hidden');
+      document.getElementById('screen-game').classList.add('hidden');
+      document.getElementById('screen-complete').classList.add('hidden');
+      document.getElementById('header-score-container').classList.add('hidden');
+      document.getElementById('header-score-container').classList.remove('flex');
+      document.getElementById('progress-bar-container').classList.add('hidden');
+
+      if (name === 'start') {
+        document.getElementById('screen-start').classList.remove('hidden');
+      } else if (name === 'how-to-play') {
+        document.getElementById('screen-how-to-play').classList.remove('hidden');
+      } else if (name === 'game') {
+        document.getElementById('screen-game').classList.remove('hidden');
+        document.getElementById('header-score-container').classList.remove('hidden');
+        document.getElementById('header-score-container').classList.add('flex');
+        document.getElementById('progress-bar-container').classList.remove('hidden');
+      } else if (name === 'complete') {
+        document.getElementById('screen-complete').classList.remove('hidden');
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function startGame() {
+      playClick();
+      currentIndex = 0;
+      score = 0;
+      updateScoreDisplay();
+      loadActivity();
+      showScreen('game');
+    }
+
+    function updateScoreDisplay() {
+      document.getElementById('header-score').innerText = score + ' / 35';
+      document.getElementById('progress-bar').style.width = ((currentIndex + 1) / ACTIVITIES.length * 100) + '%';
+    }
+
+    function loadActivity() {
+      answered = false;
+      const act = ACTIVITIES[currentIndex];
+
+      document.getElementById('activity-section-badge').innerText = 'SECTION ' + act.sectionId + ' • ' + act.sectionTitle;
+      document.getElementById('activity-number').innerText = currentIndex + 1;
+      document.getElementById('influencer-avatar').innerText = act.influencer.avatar;
+      document.getElementById('influencer-name').innerText = act.influencer.displayName;
+      document.getElementById('influencer-handle').innerText = act.influencer.handle;
+      document.getElementById('influencer-followers').innerText = act.influencer.followers + ' followers';
+      document.getElementById('influencer-platform').innerText = act.influencer.platform;
+      document.getElementById('content-tag-text').innerText = act.tag;
+      document.getElementById('influencer-content').innerText = act.content;
+      document.getElementById('influencer-likes').innerText = act.influencer.likes;
+      document.getElementById('activity-question').innerText = act.question;
+
+      // Render Options
+      const optionsContainer = document.getElementById('options-container');
+      optionsContainer.innerHTML = '';
+
+      act.options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.id = 'opt-btn-' + opt.id;
+        btn.className = 'w-full text-left p-3 sm:p-3.5 rounded-xl border border-slate-700 bg-slate-800/90 hover:border-slate-500 hover:bg-slate-700/80 text-slate-200 text-sm font-medium transition-all flex items-start gap-3 active:scale-[0.99] cursor-pointer';
+        btn.onclick = () => selectOption(opt.id);
+
+        btn.innerHTML = `
+          <span id="opt-badge-${opt.id}" class="w-6 h-6 rounded-lg bg-slate-700 text-slate-300 text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
+            ${opt.id}
+          </span>
+          <span class="flex-1 leading-relaxed">${opt.text}</span>
+          <span id="opt-status-${opt.id}" class="shrink-0 mt-0.5"></span>
+        `;
+        optionsContainer.appendChild(btn);
+      });
+
+      document.getElementById('feedback-container').classList.add('hidden');
+      updateScoreDisplay();
+    }
+
+    function selectOption(selectedId) {
+      if (answered) return;
+      answered = true;
+
+      const act = ACTIVITIES[currentIndex];
+      const isCorrect = (selectedId === act.correct);
+
+      if (isCorrect) {
+        score++;
+        playCorrect();
+      } else {
+        playIncorrect();
+      }
+      updateScoreDisplay();
+
+      // Style options
+      act.options.forEach(opt => {
+        const btn = document.getElementById('opt-btn-' + opt.id);
+        const badge = document.getElementById('opt-badge-' + opt.id);
+        const status = document.getElementById('opt-status-' + opt.id);
+        btn.disabled = true;
+        btn.classList.remove('cursor-pointer', 'hover:border-slate-500', 'hover:bg-slate-700/80');
+
+        if (opt.id === act.correct) {
+          btn.className = 'w-full text-left p-3 sm:p-3.5 rounded-xl border border-emerald-500 bg-emerald-950/60 text-emerald-200 text-sm font-medium ring-1 ring-emerald-500/50 flex items-start gap-3';
+          badge.className = 'w-6 h-6 rounded-lg bg-emerald-500 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5';
+          status.innerHTML = '✅';
+        } else if (opt.id === selectedId && !isCorrect) {
+          btn.className = 'w-full text-left p-3 sm:p-3.5 rounded-xl border border-rose-500 bg-rose-950/60 text-rose-200 text-sm font-medium ring-1 ring-rose-500/50 flex items-start gap-3';
+          badge.className = 'w-6 h-6 rounded-lg bg-rose-500 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5';
+          status.innerHTML = '❌';
+        } else {
+          btn.className = 'w-full text-left p-3 sm:p-3.5 rounded-xl border border-slate-800 bg-slate-900/50 text-slate-500 opacity-60 text-sm font-medium flex items-start gap-3';
+        }
+      });
+
+      // Show Feedback
+      const feedbackBox = document.getElementById('feedback-alert');
+      const feedbackIcon = document.getElementById('feedback-icon');
+      const feedbackTitle = document.getElementById('feedback-title');
+      const feedbackText = document.getElementById('feedback-text');
+
+      if (isCorrect) {
+        feedbackBox.className = 'p-4 rounded-xl border border-emerald-500/50 bg-emerald-950/40 text-emerald-100 flex items-start gap-3';
+        feedbackIcon.innerText = '✅';
+        feedbackTitle.innerText = 'Correct!';
+      } else {
+        feedbackBox.className = 'p-4 rounded-xl border border-rose-500/50 bg-rose-950/40 text-rose-100 flex items-start gap-3';
+        feedbackIcon.innerText = '⚠️';
+        feedbackTitle.innerText = 'Not quite.';
+      }
+      feedbackText.innerText = act.explanation;
+
+      const nextBtn = document.getElementById('next-btn');
+      if (currentIndex === ACTIVITIES.length - 1) {
+        nextBtn.innerHTML = '<span>VIEW FINAL SCORE →</span>';
+      } else {
+        nextBtn.innerHTML = '<span>NEXT →</span>';
+      }
+
+      document.getElementById('feedback-container').classList.remove('hidden');
+    }
+
+    function nextActivity() {
+      playClick();
+      if (currentIndex < ACTIVITIES.length - 1) {
+        currentIndex++;
+        loadActivity();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        document.getElementById('final-score').innerText = score + ' / 35';
+        showScreen('complete');
+      }
+    }
+
+    // Keyboard support
+    window.addEventListener('keydown', (e) => {
+      const screenGame = document.getElementById('screen-game');
+      if (screenGame.classList.contains('hidden')) return;
+
+      const key = e.key.toUpperCase();
+      if (!answered) {
+        const valid = ['A', 'B', 'C', 'D'];
+        if (valid.includes(key)) {
+          selectOption(key);
+        } else if (['1', '2', '3', '4'].includes(key)) {
+          const map = { '1': 'A', '2': 'B', '3': 'C', '4': 'D' };
+          selectOption(map[key]);
+        }
+      } else if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        nextActivity();
+      }
+    });
+  </script>
+</body>
+</html>
